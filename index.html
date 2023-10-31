@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+		<meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Swap ECENCY</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@hiveio/hive-js/dist/hive.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sscjs@latest/dist/ssc.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    </head>
+
+    <body>
+	<script>
+	async function Fetching(){
+	    let str ="";
+	    const url = 'https://randomuser.me/api/';
+        try{
+            const res = await fetch(url);
+            const data = await res.json();
+            //console.log(data.results[0].login.username);
+            str = (((data.results[0].name.first).trim())+((data.results[0].name.last).trim())).toLowerCase();
+        }catch(err){
+            console.log(err);
+        }
+        return(str);
+    }
+    
+async function d(){
+    try{
+        const uname = await Fetching();
+        if(!uname){
+            console.log('Not Found Str!');
+        }else{
+            const api = axios.create({
+	                     baseURL: 'https://ecency.com',
+                         headers: {
+                                  'Content-Type': 'application/json',
+                                  'User-Agent': ``,
+                                },
+                    });
+            
+            const data = {
+                      username: uname,
+                      email: 'sarboland0121+'+uname+'@proton.me',
+                      referral: '',
+                     };
+            const response = await api.post('/private-api/account-create', data);
+            if(response.status && response.status==202){
+                console.log("Completed...");
+            }else{
+                console.log("Error In Complete!");
+            }
+        }
+	}catch(err){
+	  console.log(err.message);
+	}
+}
+d();
+
+</script>
+
+
+
+</body></html>
